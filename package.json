@@ -1,0 +1,15 @@
+{
+  "name": "@cosy/vue-message",
+  "version": "1.0.0",
+  "description": "A message plugin base on Vue",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "keywords": [
+    "vue",
+    "message"
+  ],
+  "author": "cosy247",
+  "license": "ISC"
+}
