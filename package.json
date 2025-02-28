@@ -6,6 +6,10 @@
   "scripts": {
     "build": "rollup -c"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cosy247/vue-message.git"
+  },
   "keywords": [
     "vue",
     "message"
