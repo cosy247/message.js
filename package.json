@@ -1,19 +1,23 @@
 {
-  "name": "@cosy/vue-message",
+  "name": "message.js",
   "version": "1.0.0",
-  "description": "A message plugin base on Vue",
-  "main": "src/index.js",
+  "description": "Web-based global notification",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
   "scripts": {
     "build": "rollup -c"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cosy247/vue-message.git"
+    "url": "git+https://github.com/cosy247/message.js.git"
   },
   "keywords": [
-    "vue",
+    "message.js",
     "message"
   ],
   "author": "cosy247",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "rollup-plugin-terser": "^7.0.2"
+  }
 }

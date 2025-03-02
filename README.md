@@ -1,17 +1,17 @@
-# @cosy/vue-message
+# message.js
 
-A global message component based on `vue`.
+Web-based global notification.
 
 ![](vue-message.png)
 
 ## Installation
 
 ```bash
-npm install @vue-message
+npm install message.js
 ```
 
 ```bash
-yarn add @vue-message
+yarn add message.js
 ```
 
 ## Usage

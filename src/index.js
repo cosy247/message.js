@@ -1,27 +1,70 @@
-import { createVNode, render } from 'vue';
-import Message from './Message.vue';
+// 定义style
+const style = document.createElement('style');
+style.innerHTML = `.cosy-messages {position: fixed;top: 0;left: 50%;width: 500px;max-width: 90vw;transform: translateX(-50%);z-index: 999;}.cosy-message {font-size: 16px;padding: 0.5em 1em;min-height: 2.5em;box-sizing: border-box;background-color: white;border: 1px solid #eee;margin-top: 1em;border-radius: 0.3em;box-shadow: 0 0 10px #8883;display: flex;align-items: center;animation: cosy-message 3.1s;gap: 0.5em;word-break: break-all;word-wrap: break-word;}@keyframes cosy-message {0% {  opacity: 0;  margin-top: 1.5em;}10% {  opacity: 1;  margin-top: 1em;}90% {  opacity: 1;  margin-top: 1em;}100% {  opacity: 0;  margin-top: -2.5em;}}.cosy-message svg {flex-shrink: 0;}.cosy-message-info {color: #888;background: #f4f4f5;border-color: #dedee2;}.cosy-message-success {color: #67c23a;background: #f0f9eb;border-color: #d8edcd;}.cosy-message-warning {color: #e6a23c;background: #fdf6ec;border-color: #e5d7c3;}.cosy-message-error {color: #f56c6c;background: #fef0f0;border-color: #e8c6c6;}`;
+document.head.appendChild(style);
+
+// 定义消息图标
+const iconMap = {
+  info: {
+    d: `M512 8.97941504c277.81531056 0 503.02058496 225.20527562 503.02058496 503.02058496s-225.20527562 503.02058496-503.02058496 503.02058496S8.97941504 789.81531056 8.97941504 512 234.18468944 8.97941504 512 8.97941504z m44.38416983 414.25224651h-88.76833966v355.0733538h88.76833966V423.23166155z m0-147.94723116h-88.76833966v88.76833845h88.76833966v-88.76833845z`,
+    fill: '#888',
+  },
+  success: {
+    d: `M512 8.97941504c277.81531056 0 503.02058496 225.20527562 503.02058496 503.02058496s-225.20527562 503.02058496-503.02058496 503.02058496S8.97941504 789.81531056 8.97941504 512 234.18468944 8.97941504 512 8.97941504z m234.46677216 264.9734901L433.38084201 596.12279603l-126.13980919-130.84453183-63.91320485 61.60522718 189.7867085 196.8881749 377.0287233-387.97681793-63.67648761-61.84194321z`,
+    fill: '#67c23a',
+  },
+  warning: {
+    d: `M512 13.76752485c140.86967172 3.70671616 258.19897111 52.4556499 351.98789818 146.24457697S1006.52575899 371.13032828 1010.23247515 512c-3.70671616 140.86967172-52.4556499 258.19897111-146.24457697 351.98789818S652.86967172 1006.52575899 512 1010.23247515c-140.86967172-3.70671616-258.19897111-52.4556499-351.98789818-146.24457697S17.47424101 652.86967172 13.76752485 512c3.70671616-140.86967172 52.4556499-258.19897111 146.24457697-351.98789818S371.13032828 17.47424101 512 13.76752485z m0 213.52820363c-19.27648101 0-35.21769596 7.04309434-47.82142061 21.13039516-12.60372464 14.08730081-18.16435495 30.76919172-16.68189091 50.04567272l25.5788994 284.70427152c1.48246404 10.37947252 5.74635536 18.72041798 12.78944969 25.02283637 7.04309434 6.30241839 15.7554899 9.45307152 26.13496243 9.4530715s19.09186809-3.15065313 26.13496243-9.4530715c7.04309434-6.30241839 11.30698566-14.64336384 12.78944969-25.02283637l25.5788994-284.70427152c1.48246404-19.27648101-4.07816627-35.95837191-16.68189091-50.04567272-12.60372464-14.08730081-28.54493959-21.13039515-47.82142061-21.13039516z m0 569.40854304c16.31155293-0.74178809 29.84167859-6.30241839 40.59260121-16.68189091 10.75092263-10.37947252 16.12582788-23.72498525 16.12582788-40.03653818 0-16.31155293-5.37490525-29.84167859-16.12582788-40.59260122-10.75092263-10.75092263-24.28104828-16.12582788-40.59260121-16.12582787-16.31155293 0-29.84167859 5.37490525-40.59260121 16.12582787-10.75092263 10.75092263-16.12582788 24.28104828-16.12582788 40.59260122 0 16.31155293 5.37490525 29.65706566 16.12582788 40.03653818 10.75092263 10.37947252 24.28104828 15.94010282 40.59260121 16.68189091z`,
+    fill: '#e6a23c',
+  },
+  error: {
+    d: `M512 8.97941504c277.81531056 0 503.02058496 225.20527562 503.02058496 503.02058496s-225.20527562 503.02058496-503.02058496 503.02058496S8.97941504 789.81531056 8.97941504 512 234.18468944 8.97941504 512 8.97941504z m156.91283266 283.31894738l-156.88324316 156.91283266-156.94242216-156.91283266-62.78880492 62.78880492 156.94242217 156.88324316-156.94242217 156.94242216 62.78880492 62.78880492L512 574.72962591l156.91283266 156.94242216 62.78880492-62.7888037L574.72962591 512l156.94242216-156.91283266-62.7888037-62.78880492z`,
+    fill: '#f56c6c',
+  },
+};
+
+// 定义消息盒子
+const messageBox = document.createElement('div');
+messageBox.className = 'cosy-messages';
+document.body.append(messageBox);
+
+// 创建消息
+function createMessage(type, content) {
+  const messageItem = document.createElement('div');
+  messageItem.className = `cosy-message cosy-message-${type}`;
+  messageItem.innerHTML = `
+    <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
+      <path d="${iconMap[type].d}" fill="${iconMap[type].fill}"></path>
+    </svg>
+    <p>${content}</p>
+  `;
+  messageBox.append(messageItem);
+  setTimeout(() => {
+    messageBox.removeChild(messageItem);
+  }, 3000);
+}
+
+// 预定义message类型
+const message = {
+  /** 生成详情消息条 */
+  info: (content) => createMessage('info', content),
+  /** 生成成功消息条 */
+  success: (content) => createMessage('success', content),
+  /** 生成警告消息条 */
+  warning: (content) => createMessage('warning', content),
+  /** 生成错误消息条 */
+  error: (content) => createMessage('error', content),
+};
 
 /**
- * 提供显示不同类型消息的方法的对象。
+ * 自定义消息类型。
  *
- * @namespace message
- * @property {function(string): void} info - 显示信息消息。
- * @property {function(string): void} success - 显示成功消息。
- * @property {function(string): void} warning - 显示警告消息。
- * @property {function(string): void} error - 显示错误消息。
+ * @param {string} type - 消息类型。
  */
-const message = (() => {
-  const Vnode = createVNode(Message);
-  const div = document.createElement('div');
-  div.style = 'display: contents;position: fixed;width: 0;height: 0;';
-  document.body.append(div);
-  render(Vnode, div);
-  return {
-    info: (content) => Vnode.component.exposed.show(content, 'info'),
-    success: (content) => Vnode.component.exposed.show(content, 'success'),
-    warning: (content) => Vnode.component.exposed.show(content, 'warning'),
-    error: (content) => Vnode.component.exposed.show(content, 'error'),
-  };
-})();
+function defineMessage(type) {
+  message[type] = (content) => createMessage(type, content);
+}
+
+export { defineMessage };
 
 export default message;
