@@ -42,6 +42,6 @@ Add style:
 .cosy-log {
   color: #2446df;
   background: #fef0f0;
-  border-color:#1d39b8;
+  border-color: #1d39b8;
 }
 ```
